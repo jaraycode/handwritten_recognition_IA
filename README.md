@@ -9,3 +9,7 @@ Este sistema desarrollado en Python con el uso de las librerías Scikit-learn y 
 - Algoritmo que toma todas las imagenes a partir del dataframe del dataset.
 - Usar tensorflow.js para poder renderizar html con un cuadro en donde se pueda escribir con el mouse.
 - Exportar modelo y guardarlo en su carpeta para que se pueda tener listo en el momento de presentarlo.
+
+### Requisitos
+
+Todos los requisitos quedarán en el archivo requirements.txt
