@@ -3,8 +3,7 @@ from domain.modelo import modelo
 class modelo_actions (modelo):
 
     def __init__(self) -> None:
-        super().__init__()
-        pass 
+        pass
 
 
     def trainModel():

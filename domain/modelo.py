@@ -9,9 +9,4 @@ class modelo:
         > Capa de salida que permite 27 tipos diferentes de salida debido a que esas son todas las letras disponibles.
     """
     def __init__(self) -> None:
-        self.modelo = tfks.Sequential([
-            layers.Flatten(data_format=(28,28,1)),
-            layers.Dense(50, activation=tf.nn.relu),
-            layers.Dense(50, activation=tf.nn.relu),
-            layers.Dense(27, activation=tf.nn.softmax)
-        ])
+        pass
