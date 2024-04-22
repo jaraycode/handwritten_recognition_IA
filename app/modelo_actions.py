@@ -26,5 +26,7 @@ class modelo_actions (modelo):
         pass
 
     def imageToCorrectSize():
-        """A partir de un dataset dado se necesita realizar una implementación que permita llevar imagenes del dataset a un tamaño de 28x28"""
+        """
+            A partir de un dataset dado se necesita realizar una implementación que permita llevar imagenes del dataset a un tamaño de 28x28
+        """
         pass
