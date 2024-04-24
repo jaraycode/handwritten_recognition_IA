@@ -16,6 +16,7 @@ if __name__ == "__main__":
                                   layers.Dense(27, activation=tf.nn.softmax)])
     
     # no funciona debido a un bug en el lenguaje y el sistema de recursion sys.setrecursionlimit(100000)
+    # mnist trabaja con numeros, se necesita usar letras que es el caso de EMNIST
     (ds_train, ds_test), ds_info = tfds.load('mnist', split=['train', 'test'], shuffle_files=True, as_supervised=True, with_info=True)
 
     # Datos de prueba
