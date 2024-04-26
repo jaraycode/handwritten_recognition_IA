@@ -1,42 +1,55 @@
+import os
 import tensorflow as tf
 import matplotlib.pyplot as plt
-import tensorflow_datasets as tfds
-import sys
-from tensorflow.python.keras import layers, models, losses, metrics
+import pandas as pd
+from tf_keras import losses, models, layers, metrics
 
-def normalize(image, label):
-    return tf.cast(image, tf.float32)/255.,label
+DATASET_JONAS = "dataset/archive"
+
+def grafic(modelo):
+    plt.xlabel("Épocas")
+    plt.ylabel("Pérdida")
+    plt.plot(modelo.history["loss"], label="Datos de entrenamiento")
+    plt.plot(modelo.history["val_loss"], label="Datos de prueba")
+    plt.legend(loc="upper right")
+    plt.ylim([0,1])
+    plt.show()
+
+def normalize(image):
+    return image/255.
 
 if __name__ == "__main__":
     # Creando el modelo
     print("Creando modelo...")
-    m = models.Sequential(layers=[layers.Flatten(input_shape=(28,28,1)),
-                                  layers.Dense(50, activation=tf.nn.relu),
-                                  layers.Dense(50, activation=tf.nn.relu),
-                                  layers.Dense(27, activation=tf.nn.softmax)])
+    m = models.Sequential(layers=[
+    layers.Flatten(input_shape=(784,)),
+    layers.Dense(125, activation='relu'),
+    layers.Dropout(0.03), # Para evitar el overfitting
+    layers.Dense(125, activation='relu'),
+    layers.Dropout(0.03),
+    layers.Dense(125, activation='relu'),
+    layers.Dropout(0.03),
+    layers.Dense(27, activation='softmax')])
+
+    m.compile(optimizer='adam', loss=losses.SparseCategoricalCrossentropy(from_logits=True), metrics=[metrics.SparseCategoricalAccuracy()])
     
-    # no funciona debido a un bug en el lenguaje y el sistema de recursion sys.setrecursionlimit(100000)
-    # mnist trabaja con numeros, se necesita usar letras que es el caso de EMNIST
-    (ds_train, ds_test), ds_info = tfds.load('mnist', split=['train', 'test'], shuffle_files=True, as_supervised=True, with_info=True)
+    # Datos de entrenamiento
+    df_train = pd.read_csv(os.path.join(DATASET_JONAS, "emnist-letters-train.csv"), header=None)
+    df_train = df_train.sample(frac=1)
+    df_train_label = df_train.pop(0)
+    num_train = df_train.__len__()
+    df_train = df_train.map(normalize)
 
     # Datos de prueba
-    ds_train.map(normalize, num_parallel_calls=tf.data.AUTOTUNE)
-    ds_train = ds_train.cache()
-    ds_train = ds_train.shuffle(ds_info.splits['train'].num_examples)
-    ds_train = ds_train.batch(128)
-    ds_train = ds_train.prefetch(tf.data.AUTOTUNE)
-
-    # Datos de validacion
-    ds_test = ds_test.map(normalize, num_parallel_calls=tf.data.AUTOTUNE)
-    ds_test = ds_test.cache()
-    ds_test = ds_test.batch(128)
-    ds_test = ds_test.prefetch(tf.data.AUTOTUNE)
+    df_test = pd.read_csv(os.path.join(DATASET_JONAS, "emnist-letters-test.csv"), header=None)
+    df_test = df_test.sample(frac=1)
+    df_test_label = df_test.pop(0)
+    df_test = df_test.map(normalize)
+    df_test
 
     # Compilar modelo
     m.compile(optimizer='adam', loss=losses.SparseCategoricalCrossentropy(from_logits=True), metrics=[metrics.SparseCategoricalAccuracy()])
     # Entrenar modelo
-    historia = m.fit(ds_train, epochs=5, validation_data=ds_test)
+    historia = m.fit(df_train, df_train_label, epochs=5, validation_data=[df_test, df_test_label])
     # Mostrar gráfica de pérdida
-    plt.xlabel("Epocas")
-    plt.ylable("Porcentaje de pérdida")
-    plt.plot(historia.history['loss'])
+    grafic(historia)
