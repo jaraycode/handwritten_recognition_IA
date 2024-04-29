@@ -16,8 +16,6 @@
         }
         canvas {
             border: 5px solid black;
-            width: 400px;
-            height: 400px;
             background: white;
         }
         #buttons {
@@ -45,27 +43,30 @@
     </style>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
+    <canvas id="canvas" width="600" height="400"></canvas>
     <div id="buttons">
         <button id="clear">Borrar</button>
         <button id="save">Guardar</button>
+    </div>
+    <div>
+        <p>Aqui va la respuesta</p>
     </div>
     <script>
         const canvas = document.getElementById('canvas');
         const clearButton = document.getElementById('clear');
         const saveButton = document.getElementById('save');
+        //Guardar el elemento y el contexto
+        const context = canvas.getContext("2d");
 
         // Aquí puedes agregar la lógica para borrar y guardar el lienzo
         clearButton.addEventListener('click', function() {
-            // Lógica para borrar el lienzo
+            context.clearRect(0,0,canvas.width,canvas.height);
         });
 
         saveButton.addEventListener('click', function() {
             // Lógica para guardar el lienzo
         });
 
-        //Guardar el elemento y el contexto
-        const context = canvas.getContext("2d");
 
         let initialX;
         let initialY;
