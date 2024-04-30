@@ -2,6 +2,8 @@ from flask import Flask, render_template
 import cv2
 app = Flask(__name__)
 
+LETTERS = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+
 def preview(image):
     
     # Asegurar escala de grises
@@ -17,4 +19,4 @@ def home():
     return render_template('index.html')
 
 if __name__ == "__main__":
-    app.run()
+    app.run("0.0.0.0","8000")
