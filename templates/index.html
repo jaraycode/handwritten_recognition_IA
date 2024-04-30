@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Handwritting playground</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.6.0/dist/tf.min.js"></script>
     <style>
         body {
             display: grid;
@@ -43,29 +42,43 @@
     </style>
 </head>
 <body>
-    <canvas id="canvas" width="600" height="400"></canvas>
-    <div id="buttons">
-        <button id="clear">Borrar</button>
-        <button id="save">Guardar</button>
-    </div>
+        <canvas id="canvas" width="600" height="400"></canvas>
+        <div id="buttons">
+            <button id="clear">Borrar</button>
+            <button id="save" type="submit" onclick="guardar()">Guardar</button>
+        </div>
     <div>
-        <p>Aqui va la respuesta</p>
+        Predicción: {{prediction_text}}<p id="pred"></p>
     </div>
     <script>
         const canvas = document.getElementById('canvas');
         const clearButton = document.getElementById('clear');
         const saveButton = document.getElementById('save');
+        const imgConverter = document.querySelector("imgConverter");
+        const parrafo = document.getElementById("pred")
         //Guardar el elemento y el contexto
         const context = canvas.getContext("2d");
 
         // Aquí puedes agregar la lógica para borrar y guardar el lienzo
         clearButton.addEventListener('click', function() {
             context.clearRect(0,0,canvas.width,canvas.height);
+            
         });
 
         saveButton.addEventListener('click', function() {
             // Lógica para guardar el lienzo
+            // fetch("0.0.0.0:8000/prediction").then().catch()
+            
         });
+
+        function guardar() {
+            const file = canvas.toDataURL();
+            const data = JSON.stringify(canvas)
+            console.log(file)
+            alert(data + " saved")
+            fetch(`http://localhost:8000/prediction/`).then(response => response.json()).then(data => parrafo.append(data['message']))
+            //$.post("/", {save_fname: file, save_data: data})
+        }
 
 
         let initialX;
@@ -109,7 +122,7 @@
         const mouseMoving = (evt) => {
             evt.preventDefault();
             if ( evt.changedTouches === undefined) {
-                 dibujar(evt.offsetX, evt.offsetY);
+                dibujar(evt.offsetX, evt.offsetY);
             }else{
                 dibujar( evt.changedTouches[0].pageX - correccionX  , evt.changedTouches[0].pageY - correccionY );
             }
@@ -126,6 +139,8 @@
         //pantallas tactiles
         canvas.addEventListener('touchstart', mouseDown);
         canvas.addEventListener('touchend', mouseUp);
+
+        canvas.toD
     </script>
 </body>
 </html>
