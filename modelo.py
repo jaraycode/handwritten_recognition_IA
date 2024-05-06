@@ -18,6 +18,9 @@ def grafic(modelo):
 def normalize(image):
     return image/255.
 
+def get_word():
+    pass
+
 if __name__ == "__main__":
     # Creando el modelo
     print("Creando modelo...")
