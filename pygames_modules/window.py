@@ -1,4 +1,5 @@
 import pygame
+from predict import Predict
 
 class window:
 
@@ -16,22 +17,20 @@ class window:
         self.painting = []
         self.draw = False
 
-    def cortar(self, img_original):
-        return img_original.subsurface(0,0,self.WIDTH,self.HEIGHT)
-
-    def draw_painting2(self, screen, color, inicio, fin, radio = 20):
-        x = fin[0] - inicio[0]
-        y = fin[1] - inicio[1]
-        distance = max(abs(x), abs(y))
-        for i in range(distance):
-            x = int(inicio[0] + float(i) / distance * x)
-            y = int(inicio[1] + float(i) / distance * y)
-            pygame.draw.circle(screen, color, (x, y), radio)
+    def cut_image(self, img_original):
+        return img_original.subsurface(0,0,self.WIDTH,self.HEIGHT-100)
 
     def draw_painting(self, painting):
         for i in range(len(painting)):
-            print(painting[i][1])
             pygame.draw.circle(self.screen, painting[i][0], painting[i][1], painting[i][2])
+
+    def clean_board(self):
+        self.painting = []
+        self.screen.fill('white')
+
+    def predict(self):
+        model = Predict()
+        pass
 
     def pantalla(self, caption) -> None:        
         pygame.display.set_caption(caption)
@@ -51,11 +50,17 @@ class window:
             # Tener su posición y pintar en la ubicación deseada 
             if mouse[1] < self.HEIGHT-100:
                 pygame.draw.circle(self.screen, self.active_color, mouse, self.size_brush)
-            print(mouse)
+
             if left_click and mouse[1] < self.HEIGHT-100:
                 self.painting.append((self.active_color, mouse, self.size_brush))
+
             self.draw_painting(painting=self.painting)
 
+            if left_click and mouse[1] > self.HEIGHT-75 and mouse[1] < self.HEIGHT-25 and mouse[0] > self.WIDTH-900 and mouse[0] < self.WIDTH-750:
+                pygame.image.save(self.cut_image(self.screen), "word.jpg")
+                print("Boton predecir")
+            elif left_click and mouse[1] > self.HEIGHT-75 and mouse[1] < self.HEIGHT-25 and mouse[0] > self.WIDTH-700 and mouse[0] < self.WIDTH-550:
+                self.clean_board() # Limpia la pantalla
 
             #if event.type == pygame.MOUSEBUTTONDOWN and event.pos[1] < self.HEIGHT-100:
             #    if event.button == 1:

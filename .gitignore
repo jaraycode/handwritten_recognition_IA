@@ -3,3 +3,4 @@ DOCKERFILE
 trainedModel
 dataset
 assets
+pygames_modules/__pycache__
