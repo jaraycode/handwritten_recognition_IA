@@ -29,11 +29,12 @@ class window:
 
     def predict(self, image):
         model = Predict()
-        model.image(image)
-        pass
+        return model.image(image)
+        
 
     def pantalla(self, caption) -> None:        
         pygame.display.set_caption(caption)
+        word = ""
         run = True
         while run:
             self.timer.tick(self.fps)
@@ -56,10 +57,25 @@ class window:
 
             self.draw_painting(painting=self.painting)
 
+            # Barra inferior
+            pygame.draw.rect(self.screen, 'pink', (0,self.HEIGHT-100, self.WIDTH, self.HEIGHT-300))
+            # Linea divisoria
+            pygame.draw.rect(self.screen, 'gray', (0,self.HEIGHT-100, self.WIDTH, self.HEIGHT-395))
+            # Mostrar botones
+            pygame.draw.rect(self.screen, 'gray',(self.WIDTH-900, self.HEIGHT-75, 150,50))
+            pygame.draw.rect(self.screen, 'gray',(self.WIDTH-700, self.HEIGHT-75, 150,50))
+            text = self.font.render("Predecir", True, 'white')
+            self.screen.blit(text, (self.WIDTH-875, self.HEIGHT-65))
+            text = self.font.render("Limpiar", True, 'white')
+            self.screen.blit(text, (self.WIDTH-675, self.HEIGHT-65))
+
+
             if left_click and mouse[1] > self.HEIGHT-75 and mouse[1] < self.HEIGHT-25 and mouse[0] > self.WIDTH-900 and mouse[0] < self.WIDTH-750:
                 archivo = "word.jpg"
                 pygame.image.save(self.cut_image(self.screen), archivo)
-                self.predict(archivo)
+                word = self.predict(archivo)
+                text = self.font.render(word, True, 'white')
+                self.screen.blit(text, (self.WIDTH-575, self.HEIGHT-65))
                 print("Boton predecir")
             elif left_click and mouse[1] > self.HEIGHT-75 and mouse[1] < self.HEIGHT-25 and mouse[0] > self.WIDTH-700 and mouse[0] < self.WIDTH-550:
                 self.clean_board() # Limpia la pantalla
@@ -76,18 +92,6 @@ class window:
             #        self.draw_painting2(self.screen, self.active_color, event.pos, last, self.size_brush)
             #        print(event.pos)
             #    last = event.pos
-
-            # Barra inferior
-            pygame.draw.rect(self.screen, 'pink', (0,self.HEIGHT-100, self.WIDTH, self.HEIGHT-300))
-            # Linea divisoria
-            pygame.draw.rect(self.screen, 'gray', (0,self.HEIGHT-100, self.WIDTH, self.HEIGHT-395))
-            # Mostrar botones
-            pygame.draw.rect(self.screen, 'gray',(self.WIDTH-900, self.HEIGHT-75, 150,50))
-            pygame.draw.rect(self.screen, 'gray',(self.WIDTH-700, self.HEIGHT-75, 150,50))
-            text = self.font.render("Predecir", True, 'white')
-            self.screen.blit(text, (self.WIDTH-875, self.HEIGHT-65))
-            text = self.font.render("Limpiar", True, 'white')
-            self.screen.blit(text, (self.WIDTH-675, self.HEIGHT-65))
             # Mostrar en pantalla
             pygame.display.flip()
         pygame.quit()

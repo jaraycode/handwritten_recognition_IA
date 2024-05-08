@@ -2,7 +2,6 @@ import cv2
 import pandas as pd
 import numpy as np
 import tensorflow as tf
-import matplotlib.pyplot as plt
 from tf_keras import models
 
 # Lista de las letras que se necesitan
@@ -32,8 +31,7 @@ class Predict():
             if idd[0][origin][3] != -1 and z > 10 and w > 40:
                 imagen_for=imagen_org[y:y+w, x:x+z]
                 imagen_for=cv2.bitwise_not(imagen_for)                                            
-                imagen_for = cv2.resize(imagen_for, (28,28))
-
+                imagen_for = cv2.resize(imagen_for, (28,28), interpolation=cv2.INTER_AREA)
                 # Crear una imagen en blanco para dibujar el contorno
                 contour_image = np.zeros_like(imagen_for)
                 
@@ -50,16 +48,16 @@ class Predict():
                 # Rotar la imagen 90 grados hacia la izquierda
                 #imagen_for = cv2.rotate(imagen_for, cv2.ROTATE_90_COUNTERCLOCKWISE)
 
-                cv2.imshow("Prueba", imagen_for)
-                cv2.waitKey(0)
+                #cv2.imshow("Prueba", imagen_for)
+                #cv2.waitKey(0)
         #imagen = imagen.transpose()
         #img = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
                 #i = tf.image.resize(imagen_for,(1,784))
                 imagen = imagen_for.flatten("F")
                 df_img = pd.DataFrame(imagen)
                 df_img = df_img.map(self.normalize)
-                #df_img = df_img.T
-                print(df_img)
+                df_img = df_img.T
+                #print(df_img)
                 tensor = tf.constant(df_img.to_numpy(np.float32),tf.float32,shape=[1,784])
                 prediccion = self.modelo.predict(tensor)
         #tensor = tf.Tensor(df_img.to_numpy(), shape=(784,))
@@ -73,6 +71,7 @@ class Predict():
         #print(tf.shape(tensor))
                 word += LETTERS[np.argmax(prediccion)-1]
         print(f"La predicción indica que su letra es: {word}")
+        return word
 
 if __name__ == "__main__":
     prueba = Predict()
