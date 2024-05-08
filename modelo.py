@@ -3,6 +3,9 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import pandas as pd
 from tf_keras import losses, models, layers, metrics
+import tensorflow_datasets as tfds
+
+tfds.load('emnist', ['train', 'test'], shuffle_files=True, as_supervised=True, with_info=True)
 
 DATASET_JONAS = "dataset/archive"
 

@@ -1,6 +1,5 @@
 import pygame
 from predict import Predict
-
 class window:
 
     def __init__(self, width = 1000, height = 400, fps = 120) -> None:
@@ -13,7 +12,7 @@ class window:
         self.screen = pygame.display.set_mode([self.WIDTH,self.HEIGHT])
         self.font = pygame.font.Font('font/Ubuntu-Regular.ttf',24)
         self.active_color = (0,0,0)
-        self.size_brush = 10
+        self.size_brush = 5
         self.painting = []
         self.draw = False
 
@@ -28,8 +27,9 @@ class window:
         self.painting = []
         self.screen.fill('white')
 
-    def predict(self):
+    def predict(self, image):
         model = Predict()
+        model.image(image)
         pass
 
     def pantalla(self, caption) -> None:        
@@ -57,7 +57,9 @@ class window:
             self.draw_painting(painting=self.painting)
 
             if left_click and mouse[1] > self.HEIGHT-75 and mouse[1] < self.HEIGHT-25 and mouse[0] > self.WIDTH-900 and mouse[0] < self.WIDTH-750:
-                pygame.image.save(self.cut_image(self.screen), "word.jpg")
+                archivo = "word.jpg"
+                pygame.image.save(self.cut_image(self.screen), archivo)
+                self.predict(archivo)
                 print("Boton predecir")
             elif left_click and mouse[1] > self.HEIGHT-75 and mouse[1] < self.HEIGHT-25 and mouse[0] > self.WIDTH-700 and mouse[0] < self.WIDTH-550:
                 self.clean_board() # Limpia la pantalla
