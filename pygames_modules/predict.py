@@ -46,7 +46,7 @@ class Predict():
                 #    imagen_for = cv2.flip(imagen_for, 1)  # Espejo horizontal
 
                 # Rotar la imagen 90 grados hacia la izquierda
-                #imagen_for = cv2.rotate(imagen_for, cv2.ROTATE_90_COUNTERCLOCKWISE)
+                #imagen_for = cv2.rotate(imagen_for, cv2.ROTATE_90_CLOCKWISE)
 
                 #cv2.imshow("Prueba", imagen_for)
                 #cv2.waitKey(0)
