@@ -12,7 +12,7 @@ class window:
         self.screen = pygame.display.set_mode([self.WIDTH,self.HEIGHT])
         self.font = pygame.font.Font('font/Ubuntu-Regular.ttf',24)
         self.active_color = (0,0,0)
-        self.size_brush = 5
+        self.size_brush = 2.5
         self.painting = []
         self.draw = False
 
@@ -81,18 +81,6 @@ class window:
 
             text = self.font.render(f"Su predicción es: {word}", True, 'white')
             self.screen.blit(text, (self.WIDTH-375, self.HEIGHT-65))
-            #if event.type == pygame.MOUSEBUTTONDOWN and event.pos[1] < self.HEIGHT-100:
-            #    if event.button == 1:
-            #        pygame.draw.circle(self.screen, self.active_color, event.pos, self.size_brush)
-            #        self.draw = True
-            #elif event.type == pygame.MOUSEBUTTONUP:
-            #   self.draw = False
-            #elif event.type == pygame.MOUSEMOTION:
-            #    if self.draw and event.pos[0] < self.HEIGHT-100:
-            #        pygame.draw.circle(self.screen, self.active_color, event.pos, self.size_brush)
-            #        self.draw_painting2(self.screen, self.active_color, event.pos, last, self.size_brush)
-            #        print(event.pos)
-            #    last = event.pos
             # Mostrar en pantalla
             pygame.display.flip()
         pygame.quit()

@@ -4,4 +4,4 @@ trainedModel
 dataset
 assets
 pygames_modules/__pycache__
-pygames_modules/word.jpg
+pygames_modules/*.jpg

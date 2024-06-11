@@ -53,12 +53,13 @@ class Predict():
         #imagen = imagen.transpose()
         #img = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
                 #i = tf.image.resize(imagen_for,(1,784))
-                imagen = imagen_for.flatten("F")
-                df_img = pd.DataFrame(imagen)
-                df_img = df_img.map(self.normalize)
-                df_img = df_img.T
+                #imagen = imagen_for.flatten("F")
+                #df_img = pd.DataFrame(imagen)
+                #df_img = df_img.map(self.normalize)
+                #df_img = df_img.T
                 #print(df_img)
-                tensor = tf.constant(df_img.to_numpy(np.float32),tf.float32,shape=[1,784])
+                tensor = tf.constant(imagen_for,tf.float32,shape=[1,28,28])
+                #tensor = tf.convert_to_tensor(imagen_for, tf.float32)
                 prediccion = self.modelo.predict(tensor)
         #tensor = tf.Tensor(df_img.to_numpy(), shape=(784,))
         #tensor = tf.shape(tensor)
