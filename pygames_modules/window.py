@@ -12,7 +12,7 @@ class window:
         self.screen = pygame.display.set_mode([self.WIDTH,self.HEIGHT])
         self.font = pygame.font.Font('font/Ubuntu-Regular.ttf',24)
         self.active_color = (0,0,0)
-        self.size_brush = 2.5
+        self.size_brush = 5
         self.painting = []
         self.draw = False
 
